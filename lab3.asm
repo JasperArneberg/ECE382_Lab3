@@ -67,13 +67,14 @@ while1:
 while0:
 	bit.b	#8, &P2IN					; bit 3 of P1IN clear?
 	jz		while0						; Yes, branch back and wait
-
+	mov		R10,		R12
+	mov 	R11,		R13
 	call	#draw8by8
 	jmp		while1
 
 ;-------------------------------------------------------------------------------
 ;	Name:		draw8by8
-;	Inputs:		starting row in r10 and column in r11
+;	Inputs:		starting row in r12 and column in r13
 ;	Outputs:	none
 ;	Purpose:	draw an 8x8 block in a specified location
 ;
@@ -81,23 +82,33 @@ while0:
 ;-------------------------------------------------------------------------------
 draw8by8:
 	push 	R8
-	mov		#8,	R8
+	push	R10
+	push	R11
+	push	R12
+	push	R13
+
+	mov		#8,			R8				;8 loops
+	mov		R12,		R10				;row cursor
+	mov		R13,		R11				;column cursor
 loop8:
-	mov		#NOKIA_DATA, R12			; For testing just draw an 8 pixel high
-	mov		#0xFF, R13					; beam with a 2 pixel hole in the center
+	mov		#NOKIA_DATA, R12
+	mov		#0xFF, R13					;full 8x1 block
 	call	#writeNokiaByte
 
-	;inc		R10							; since rows are 8 times bigger than columns
-	;and.w	#0x07, R10					; wrap over the row mod 8
-	inc		R11							; just let the columm overflow after 92 buttons
-	mov		R10, R12					; increment the row
-	mov		R11, R13					; and column of the next beam
-	call	#setAddress					; we draw
+	mov		R10,		R12
+	inc		R11							;increment for next iteration
+	mov		R11,		R13
+
+	call	#setAddress					;we draw
 
 	dec		R8
 	jnz		loop8
 
-	pop R8
+	pop		R13
+	pop		R12
+	pop		R11
+	pop		R10
+	pop		R8
 	ret
 
 
