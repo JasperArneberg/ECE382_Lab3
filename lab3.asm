@@ -53,12 +53,21 @@ main:
 	clr		R10							; used to move the cursor around
 	clr		R11
 
-basicFunctionality:
-	;push r12
-	;push r13
-	;call clear screen
-	;pop r13
-	;pop r12
+	call	#wait4btnPress
+	mov		R10,		R12
+	mov 	R11,		R13
+	call	#draw8by8
+
+end	jmp		end
+
+;-------------------------------------------------------------------------------
+;	Name:		wait4btnPress
+;	Inputs:
+;	Outputs:
+;	Purpose:	waits until button is pressed and released
+;	Registers:
+;-------------------------------------------------------------------------------
+wait4btnPress:
 
 while1:
 	bit.b	#8, &P2IN					; bit 3 of P1IN set?
@@ -67,18 +76,16 @@ while1:
 while0:
 	bit.b	#8, &P2IN					; bit 3 of P1IN clear?
 	jz		while0						; Yes, branch back and wait
-	mov		R10,		R12
-	mov 	R11,		R13
-	call	#draw8by8
-	jmp		while1
+
+	ret
 
 ;-------------------------------------------------------------------------------
 ;	Name:		draw8by8
 ;	Inputs:		starting row in r12 and column in r13
-;	Outputs:	none
+;	Outputs:	8x8 block on LCD screen
 ;	Purpose:	draw an 8x8 block in a specified location
-;
-;	Registers:	counting in R8
+;	Registers:	counting in R8, row cursor in R10, column cursor
+;   			in R11
 ;-------------------------------------------------------------------------------
 draw8by8:
 	push 	R8
@@ -96,7 +103,7 @@ loop8:
 	call	#writeNokiaByte
 
 	mov		R10,		R12
-	inc		R11							;increment for next iteration
+	inc		R11							;increment column cursor for next iteration
 	mov		R11,		R13
 
 	call	#setAddress					;we draw
