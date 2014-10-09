@@ -53,6 +53,13 @@ main:
 	clr		R10							; used to move the cursor around
 	clr		R11
 
+basicFunctionality:
+	;push r12
+	;push r13
+	;call clear screen
+	;pop r13
+	;pop r12
+
 while1:
 	bit.b	#8, &P2IN					; bit 3 of P1IN set?
 	jnz 	while1						; Yes, branch back and wait
@@ -61,6 +68,18 @@ while0:
 	bit.b	#8, &P2IN					; bit 3 of P1IN clear?
 	jz		while0						; Yes, branch back and wait
 
+	call	#draw8by8
+	jmp		while1
+
+;-------------------------------------------------------------------------------
+;	Name:		draw8by8
+;	Inputs:		starting row in r12 and column in r13
+;	Outputs:	none
+;	Purpose:	draw an 8x8 block in a specified location
+;
+;	Registers:
+;-------------------------------------------------------------------------------
+draw8by8:
 	mov		#NOKIA_DATA, R12			; For testing just draw an 8 pixel high
 	mov		#0xE7, R13					; beam with a 2 pixel hole in the center
 	call	#writeNokiaByte
@@ -71,8 +90,10 @@ while0:
 	mov		R10, R12					; increment the row
 	mov		R11, R13					; and column of the next beam
 	call	#setAddress					; we draw
+	ret
 
-	jmp		while1
+
+
 
 ;-------------------------------------------------------------------------------
 ;	Name:		initNokia		68(rows)x92(columns)
