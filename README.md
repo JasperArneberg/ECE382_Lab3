@@ -11,8 +11,15 @@ Capt Trimble
 
 
 ##Lab
+####Logic Analyzer Results
+The original lab3.asm file was looked at with a commercial logic analyzer.
 
+####Writing Modes
+![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/bitblock_filled.bmp?raw=true "Writing Modes")
 
+####A Functionality
+The lab3.asm file was modified to draw an 8x8 block up, down, left, or right when the corresponding key was pressed. This allowed for visually appealing displays to be made, such as can be seen below.
+![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/hi_lcd.png?raw=true "Special Message")
 
 ####Debugging
 In the original code, the setAddress routine was called after the writeNokiaByte for the data was called. This led to a curious error where one column of the 8x8 block was always at row 0. This error was fixed as soon as the call to setAddress was moved before the call to writeNokiaByte within the draw8x8 subroutine.
