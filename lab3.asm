@@ -50,10 +50,11 @@ main:
 	call	#initNokia					; initialize the Nokia 1206
 	call	#clearDisplay				; clear the display and get ready....
 
-	clr		R10							; used to move the cursor around
-	clr		R11
+	mov		#4,			R10				; initialize row to middle
+	mov		#48,		R11				; initizlize column to center
 
 	call	#wait4btnPress
+
 	mov		R10,		R12
 	mov 	R11,		R13
 	call	#draw8by8
@@ -98,15 +99,15 @@ draw8by8:
 	mov		R12,		R10				;row cursor
 	mov		R13,		R11				;column cursor
 loop8:
+	mov		R10,		R12
+	mov		R11,		R13
+	inc		R11							;increment column cursor for next iteration
+
+	call	#setAddress					;we draw
+
 	mov		#NOKIA_DATA, R12
 	mov		#0xFF, R13					;full 8x1 block
 	call	#writeNokiaByte
-
-	mov		R10,		R12
-	inc		R11							;increment column cursor for next iteration
-	mov		R11,		R13
-
-	call	#setAddress					;we draw
 
 	dec		R8
 	jnz		loop8
@@ -286,7 +287,7 @@ clearDisplay:
 	call	#setAddress
 
 	mov.w	#0x01, R12			; write a "clear" set of pixels
-	mov.w	#0x00, R13			; to every byt on the display
+	mov.w	#0x00, R13			; to every byte on the display
 
 	mov.w	#0x360, R11			; loop counter
 clearLoop:
