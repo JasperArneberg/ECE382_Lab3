@@ -18,12 +18,12 @@ In the original lab3.asm, four calls were made to the writeNokiaByte subroutine.
 | Line | R12            | R13    | Purpose                       |
 |------|----------------|--------|-------------------------------|
 | 66   | 1 (NOKIA_DATA) | 0xE7   | Pixel Data (11100111)         |
-| 276  | 0 (NOKIA_CMD)  | 0xB00X | Row Address                   |
-| 288  | 0 (NOKIA_CMD)  | 0xXX00 | First Part of Column Address  |
-| 294  | 0 (NOKIA_CMD)  | 0x00XX | Second Part of Column Address |
+| 276  | 0 (NOKIA_CMD)  | 0xBX   | Row Address                   |
+| 288  | 0 (NOKIA_CMD)  | 0x1X   | First Part of Column Address (Most significant nibble) |
+| 294  | 0 (NOKIA_CMD)  | 0x0X   | Second Part of Column Address |
 
 ####Logic Analyzer Results
-The original lab3.asm file was looked at with a commercial logic analyzer. The following table is a summary of the results of the packets sent to the Nokia 1202 display. Note that this was for the very first press of the button, so the row and column values are both 0.
+The original lab3.asm file was looked at with a commercial logic analyzer. The following table is a summary of the results of the packets sent to the Nokia 1202 display. Note that this was for the very first press of the button, so the row and column values are both 1.
 
 | Line | Command/Data | 8-bit packet |
 |------|--------------|--------------|
