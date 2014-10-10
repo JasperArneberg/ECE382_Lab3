@@ -3,7 +3,7 @@ ECE382_Lab3
 
 Lab 3: SPI, "I/O"
 
-C3C Jasper Arneberg  
+C2C Jasper Arneberg  
 T5 ECE 382
 Capt Trimble  
 
