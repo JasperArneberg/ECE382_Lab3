@@ -53,22 +53,26 @@ main:
 	mov		#4,			R10				; initialize row to middle
 	mov		#48,		R11				; initizlize column to center
 
-	call	#wait4btnPress
+main_loop:
+	;call	#basicFunctionality
+	call	#btn_press
 
 	mov		R10,		R12
 	mov 	R11,		R13
-	call	#draw8by8
+	call	#draw8x8
 
-end	jmp		end
+	jmp		main_loop
+
 
 ;-------------------------------------------------------------------------------
-;	Name:		wait4btnPress
+;	Name:		basicFunctionality
 ;	Inputs:
 ;	Outputs:
-;	Purpose:	waits until button is pressed and released
+;	Purpose:	waits until button is pressed and released, used in basic
+;				functionality
 ;	Registers:
 ;-------------------------------------------------------------------------------
-wait4btnPress:
+basicFunctionality:
 
 while1:
 	bit.b	#8, &P2IN					; bit 3 of P1IN set?
@@ -81,14 +85,67 @@ while0:
 	ret
 
 ;-------------------------------------------------------------------------------
-;	Name:		draw8by8
+;	Name:		btn_press
+;	Inputs:
+;	Outputs:
+;	Purpose:	waits until button is pressed and released
+;	Registers:
+;-------------------------------------------------------------------------------
+btn_press:
+	bit.b	#32, 		&P2IN			; bit 5 of P2IN set?
+	jz		btn_up
+	bit.b	#16, 		&P2IN			; bit 4 of P2IN set?
+	jz		btn_down
+	bit.b 	#8, 		&P2IN			; bit 2 of P2In set?
+	jz		btn_sel
+	bit.b	#4, 		&P2IN			; bit 2 of P2IN set?
+	jz		btn_left
+	bit.b	#2, 		&P2IN			; bit 1 of P2IN set?
+	jz		btn_right
+	jmp 	btn_press					; check for button presses again
+
+btn_up:
+	bit.b	#32, 		&P2IN
+	jz		btn_up						; wait until button released
+	sub		#1,			R10
+	jmp		exit_sub
+
+btn_down:
+	bit.b	#16,		&P2IN			; wait until button released
+	jz		btn_down
+	add		#1,			R10
+	jmp 	exit_sub
+
+btn_sel:
+	bit.b	#8,			&P2IN			; wait until button released
+	jz		btn_sel
+	call	#clearDisplay
+	jmp		exit_sub
+
+btn_left:
+	bit.b	#4,			&P2IN			; wait until button released
+	jz		btn_left
+	sub		#8,			R11
+	jmp		exit_sub
+
+btn_right:
+	bit.b	#2,			&P2IN			; wait until button released
+	jz		btn_right
+	add		#8,			R11
+	jmp 	exit_sub
+
+exit_sub:
+	ret
+
+;-------------------------------------------------------------------------------
+;	Name:		draw8x8
 ;	Inputs:		starting row in r12 and column in r13
 ;	Outputs:	8x8 block on LCD screen
 ;	Purpose:	draw an 8x8 block in a specified location
 ;	Registers:	counting in R8, row cursor in R10, column cursor
 ;   			in R11
 ;-------------------------------------------------------------------------------
-draw8by8:
+draw8x8:
 	push 	R8
 	push	R10
 	push	R11
