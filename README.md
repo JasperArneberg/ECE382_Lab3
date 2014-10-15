@@ -76,6 +76,8 @@ The lab3.asm file was modified to draw an 8x8 block up, down, left, or right whe
 
 The code was then modified so that the block was erased when it was moved in a direction. This meant that only one block appeared on the screen at a time.
 
+The A functionality program was demonstrated to Capt Trimble on 15 October after the T5 class period. The scoring rubric was turned in with the prelab, so it was not readily available.
+
 ####Debugging
 In the original code, the setAddress routine was called after the writeNokiaByte for the data was called. This led to a curious error where one column of the 8x8 block was always at row 0. This error was fixed as soon as the call to setAddress was moved before the call to writeNokiaByte within the draw8x8 subroutine.
 
@@ -112,4 +114,4 @@ btn_press:
 
 ##Documentation
 C2C Hamza El-Saawy helped me configure the logic analyzer settings so that I could see the data getting written to the LCD during the writeNokiaByte subroutine.  
-I used http://www.tablesgenerator.com/markdown_tables to generate markdown tables efficiently.
+I used http://www.tablesgenerator.com/markdown_tables to generate markdown tables efficiently. 
