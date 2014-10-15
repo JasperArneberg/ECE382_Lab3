@@ -7,9 +7,6 @@ C2C Jasper Arneberg
 T5 ECE 382
 Capt Trimble  
 
-##Prelab
-
-
 ##Lab
 
 ####Writing to the Nokia 1202 Display
@@ -74,6 +71,8 @@ The following image shows how bits can be manipulated on the LCD. Using differen
 ####A Functionality
 The lab3.asm file was modified to draw an 8x8 block up, down, left, or right when the corresponding key was pressed. This allowed for visually appealing displays to be made, such as can be seen below.
 ![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/hi_lcd.png?raw=true "Special Message")
+
+The code was then modified so that the block was erased when it was moved in a direction. This meant that only one block appeared on the screen at a time.
 
 ####Debugging
 In the original code, the setAddress routine was called after the writeNokiaByte for the data was called. This led to a curious error where one column of the 8x8 block was always at row 0. This error was fixed as soon as the call to setAddress was moved before the call to writeNokiaByte within the draw8x8 subroutine.
