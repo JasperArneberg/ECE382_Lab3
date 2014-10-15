@@ -43,7 +43,7 @@ The following four photographs capture the screen output of the logic analyzer. 
 ######Line 294
 ![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/line294.png?raw=true "Line 294")
 
-####Speed Analysis
+####Clock Speed Analysis
 Lines 93 through 100 hold the reset line low as can be seen below:
 ```
 	; This loop creates a nice delay for the reset low pulse
