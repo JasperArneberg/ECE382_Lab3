@@ -1,9 +1,19 @@
 ;-------------------------------------------------------------------------------
-;	Chris Coulston
-;	Fall 2014
-;	MSP430G2553
-;	Draw a new vertical bar on the Nokia 1202 display everytime that SW3
-;	is pressed and released.
+;	Lab 3: SPI
+;	C2C Jasper T. Arneberg
+;	14 October 2014
+;	T5 ECE 382
+;
+;	Description: This program demonstrates functionality of communicating with
+; 	a basic LCD. This program implments a wide variety of subroutines to accomplish
+;	the task. Many of these subroutines were provided with ECE 382 class materials.
+;
+;	The draw8x8 subroutine takes in a location in R12 and R13 and draws a block
+;	on the LCD screen. Similary, the clear8x8 subroutine clears an 8x8 block. The
+;	btn_press subroutine waits for one of the five buttons on the Nokia display to
+;	be pressed. When this happens, it clears the block and sets a new address for the
+;	next block to be drawn, corresponding with the button that was pressed. The
+;	"enter" button serves as a reset to the program.
 ;-------------------------------------------------------------------------------
 	.cdecls C,LIST,"msp430.h"		; BOILERPLATE	Include device header file
 
@@ -38,6 +48,14 @@ STE2007_DISPLAYON:				.equ	0xAF
 ;	R13		8-bit	data or command
 ;
 ;	when calling setAddress
+;	R12		row address
+;	R13		column address
+;
+;	when calling draw8x8
+;	R12		row address
+;	R13		column address
+;
+;	when calling clear8x8
 ;	R12		row address
 ;	R13		column address
 ;-------------------------------------------------------------------------------
@@ -89,7 +107,7 @@ while0:
 ;	Inputs:		column in R10 and row in R11
 ;	Outputs:
 ;	Purpose:	waits until button is pressed and released
-;	Registers:
+;	Registers:	R10, R11
 ;-------------------------------------------------------------------------------
 btn_press:
 	bit.b	#32, 		&P2IN			; bit 5 of P2IN set?
@@ -107,7 +125,7 @@ btn_press:
 btn_up:
 	bit.b	#32, 		&P2IN
 	jz		btn_up						; wait until button released
-	call	#clear8x8
+	call	#clear8x8					; clears old block before new coordinates set
 	sub		#1,			R10
 	jmp		exit_sub
 
@@ -122,6 +140,8 @@ btn_sel:
 	bit.b	#8,			&P2IN			; wait until button released
 	jz		btn_sel
 	call	#clearDisplay
+	mov		#4,			R10				; initialize row to middle
+	mov		#48,		R11				; initizlize column to center
 	jmp		exit_sub
 
 btn_left:
