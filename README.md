@@ -32,7 +32,7 @@ The original lab3.asm file was looked at with a commercial logic analyzer. The f
 | 288  | Command      | 00010000     |
 | 294  | Command      | 00000001     |
 
-The following four photographs capture the screen output of the logic analyzer.
+The following four photographs capture the screen output of the logic analyzer. The two important signals are labeled with "My Bus." The first one is connected to the SCLK pin. The second is connected to the MOSI pin. 
 ######Line 66
 ![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/line66.png?raw=true "Line 66")
 
@@ -45,7 +45,30 @@ The following four photographs capture the screen output of the logic analyzer.
 ######Line 294
 ![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/line294.png?raw=true "Line 294")
 
+####Speed Analysis
+Lines 93 through 100 hold the reset line low as can be seen below:
+```
+	; This loop creates a nice delay for the reset low pulse
+	bic.b	#LCD1202_RESET_PIN, &P2OUT
+	mov		#0FFFFh, R12
+delayNokiaResetLow:
+	dec		R12
+	jne		delayNokiaResetLow
+
+	; This loop creates a nice delay for the reset high pulse
+	bis.b	#LCD1202_RESET_PIN, &P2OUT
+```
+The logic analyzer was configured to capture the reset signal on the falling edge. This enabled measuring the time that the reset signal was held low during this initialization process. Here was the screen of the logic analyzer:
+
+![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/reset_time.png?raw=true "Reset low signal")
+
+This reset signal was found to be low for 19.0625 msec, as the cursors in the image above show. Becasue 0xFFFF (65535) loops were executed, this means that each cycle took approximately 290.875 nsec to complete.
+
+Each delay cycle takes 4 instructions to complete. Two cycles are used for the "dec R12" instruction, emulated as "sub #1, R12." Another two cycles are necessary for the "jne" instruction. This means that the clock speed is approximately 72.72 nsec per cycle, or 1.375 MHz.
+
 ####Writing Modes
+The following image shows how bits can be manipulated on the LCD. Using different logical operators gives more options to the programmer.
+
 ![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/bitblock_filled.bmp?raw=true "Writing Modes")
 
 ####A Functionality
