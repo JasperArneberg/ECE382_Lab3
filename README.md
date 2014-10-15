@@ -29,7 +29,8 @@ The original lab3.asm file was looked at with a commercial logic analyzer. The f
 | 288  | Command      | 00010000     |
 | 294  | Command      | 00000001     |
 
-The following four photographs capture the screen output of the logic analyzer. The two important signals are labeled with "My Bus." The first one is connected to the SCLK pin. The second is connected to the MOSI pin. 
+The following four photographs capture the screen output of the logic analyzer. The two important signals are the SCLK pin and the MOSI pin. The SCLK signal provides synchronous timing for the data transfer. Notice how it goes high early to allow for the transfer of the data/command bit, and then it goes high and low 8 times in rapid succession to pass along the 8 data bits. The MOSI singal is the value of the data that is being passed when the SCLK signal is high.
+
 ######Line 66
 ![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/line66.png?raw=true "Line 66")
 
@@ -70,6 +71,7 @@ The following image shows how bits can be manipulated on the LCD. Using differen
 
 ####A Functionality
 The lab3.asm file was modified to draw an 8x8 block up, down, left, or right when the corresponding key was pressed. This allowed for visually appealing displays to be made, such as can be seen below.
+
 ![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/hi_lcd.png?raw=true "Special Message")
 
 The code was then modified so that the block was erased when it was moved in a direction. This meant that only one block appeared on the screen at a time.
