@@ -12,7 +12,7 @@ Capt Trimble
 
 ##Lab
 
-####Writing to the Nkia 1202 Display
+####Writing to the Nokia 1202 Display
 In the original lab3.asm, four calls were made to the writeNokiaByte subroutine. These four calls each sent a packet of data to the display.
 
 | Line | R12            | R13    | Purpose                       |
@@ -31,6 +31,19 @@ The original lab3.asm file was looked at with a commercial logic analyzer. The f
 | 276  | Command      | 10110001     |
 | 288  | Command      | 00010000     |
 | 294  | Command      | 00000001     |
+
+The following four photographs capture the screen output of the logic analyzer.
+######Line 66
+![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/line66.png?raw=true "Line 66")
+
+######Line 276
+![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/line276.png?raw=true "Line 276")
+
+######Line 288
+![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/line288.png?raw=true "Line 288")
+
+######Line 294
+![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/line294.png?raw=true "Line 294")
 
 ####Writing Modes
 ![alt text](https://github.com/JasperArneberg/ECE382_Lab3/blob/master/bitblock_filled.bmp?raw=true "Writing Modes")
