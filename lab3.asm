@@ -86,7 +86,7 @@ while0:
 
 ;-------------------------------------------------------------------------------
 ;	Name:		btn_press
-;	Inputs:
+;	Inputs:		column in R10 and row in R11
 ;	Outputs:
 ;	Purpose:	waits until button is pressed and released
 ;	Registers:
@@ -96,7 +96,7 @@ btn_press:
 	jz		btn_up
 	bit.b	#16, 		&P2IN			; bit 4 of P2IN set?
 	jz		btn_down
-	bit.b 	#8, 		&P2IN			; bit 2 of P2In set?
+	bit.b 	#8, 		&P2IN			; bit 2 of P2IN set?
 	jz		btn_sel
 	bit.b	#4, 		&P2IN			; bit 2 of P2IN set?
 	jz		btn_left
@@ -107,12 +107,14 @@ btn_press:
 btn_up:
 	bit.b	#32, 		&P2IN
 	jz		btn_up						; wait until button released
+	call	#clear8x8
 	sub		#1,			R10
 	jmp		exit_sub
 
 btn_down:
 	bit.b	#16,		&P2IN			; wait until button released
 	jz		btn_down
+	call	#clear8x8
 	add		#1,			R10
 	jmp 	exit_sub
 
@@ -125,12 +127,14 @@ btn_sel:
 btn_left:
 	bit.b	#4,			&P2IN			; wait until button released
 	jz		btn_left
+	call	#clear8x8
 	sub		#8,			R11
 	jmp		exit_sub
 
 btn_right:
 	bit.b	#2,			&P2IN			; wait until button released
 	jz		btn_right
+	call	#clear8x8
 	add		#8,			R11
 	jmp 	exit_sub
 
@@ -176,7 +180,44 @@ loop8:
 	pop		R8
 	ret
 
+;-------------------------------------------------------------------------------
+;	Name:		clear8x8
+;	Inputs:		starting row in r12 and column in r13
+;	Outputs:	clears 8x8 block on LCD screen
+;	Purpose:	clear an 8x8 block in a specified location
+;	Registers:	counting in R8, row cursor in R10, column cursor
+;   			in R11
+;-------------------------------------------------------------------------------
+clear8x8:
+	push 	R8
+	push	R10
+	push	R11
+	push	R12
+	push	R13
 
+	mov		#8,			R8				;8 loops
+	mov		R12,		R10				;row cursor
+	mov		R13,		R11				;column cursor
+clear_loop8:
+	mov		R10,		R12
+	mov		R11,		R13
+	inc		R11							;increment column cursor for next iteration
+
+	call	#setAddress					;we draw
+
+	mov		#NOKIA_DATA, R12
+	mov		#0x00, R13					;empty 8x1 block
+	call	#writeNokiaByte
+
+	dec		R8
+	jnz		clear_loop8
+
+	pop		R13
+	pop		R12
+	pop		R11
+	pop		R10
+	pop		R8
+	ret
 
 
 ;-------------------------------------------------------------------------------
